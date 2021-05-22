@@ -1,17 +1,26 @@
 package com.example.kafkastreamsdsldeduplication.config;
 
+import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.streams.state.KeyValueBytesStoreSupplier;
+import org.apache.kafka.streams.state.KeyValueStore;
+import org.apache.kafka.streams.state.StoreBuilder;
+import org.apache.kafka.streams.state.Stores;
+import org.apache.kafka.streams.state.internals.RocksDbKeyValueBytesStoreSupplier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 @Configuration
+@Slf4j
 public class StateStoreConfig {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(StateStoreConfig.class);
 
     public static final String STATE_STORE_NAME = "deduplicateData";
 
-    public static final String STATE_STORE_EDI_CLEANUP_POLICY = "compact";
+    public static final String STATE_STORE_CLEANUP_POLICY = "compact";
 
     @Value("${kafka.retention.ms:7776000000}")
     private String retentionMs;
@@ -21,8 +30,8 @@ public class StateStoreConfig {
 
     @Bean
     public StoreBuilder<KeyValueStore<String, String>> getStateStore() {
-        LOGGER.info("Initialize state store for incoming data");
-        LOGGER.info("delete.retention.ms: {}", deleteRetentionMs);
+        log.info("Initialize state store for incoming data");
+        log.info("delete.retention.ms: {}", deleteRetentionMs);
 
         KeyValueBytesStoreSupplier keyValueBytesStoreSupplier = new RocksDbKeyValueBytesStoreSupplier(STATE_STORE_NAME, false);
 
