@@ -35,7 +35,7 @@ public class StateStoreConfig {
 
         KeyValueBytesStoreSupplier keyValueBytesStoreSupplier = new RocksDbKeyValueBytesStoreSupplier(STATE_STORE_NAME, false);
 
-        Map<String, String> changelogConfig = new HashMap<String, String>();
+        Map<String, String> changelogConfig = new HashMap<>();
         changelogConfig.put("cleanup.policy", STATE_STORE_CLEANUP_POLICY);
         changelogConfig.put("delete.retention.ms", deleteRetentionMs);
         changelogConfig.put("min.insync.replicas", "1");
