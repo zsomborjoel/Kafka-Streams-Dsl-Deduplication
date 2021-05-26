@@ -1,4 +1,4 @@
-# Kafka-Streams-Dsl-Deduplication-Example
+# Kafka-Streams-Dsl-Deduplication
 
 Kafka Streams provides so-called state stores, which can be used by stream processing applications to store and query data, which is an important capability when implementing stateful operations.
 
@@ -8,4 +8,4 @@ Kafka Streams provides so-called state stores, which can be used by stream proce
 
 State Store in the workflow
 
-![StateStore](https://github.com/zsomborjoel/Kafka-Streams-Dsl-Deduplication-Example/blob/main/kafka-streams-state-store.png)
+![StateStore](https://github.com/zsomborjoel/Kafka-Streams-Dsl-Deduplication/blob/main/kafka-streams-state-store.png)
