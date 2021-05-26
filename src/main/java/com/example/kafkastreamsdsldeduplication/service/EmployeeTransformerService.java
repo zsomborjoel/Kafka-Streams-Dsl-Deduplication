@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmployeeTransformerService implements TransformerService {
+import static com.example.kafkastreamsdsldeduplication.constants.DeduplicationConstants.TRUE;
+
+
+public class EmployeeTransformerService implements TransformerService, DeduplicationService<Employee> {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -26,7 +29,7 @@ public class EmployeeTransformerService implements TransformerService {
         if (sourceJson != null) {
             Employees employees = objectMapper.readValue(sourceJson, Employees.class);
             for (Employee employee : employees.getEmployeeList()) {
-                if (isValidUser(employee.getEmail())) {
+                if (isValidUser(employee.getEmail()) && filterByStateStore(employee, keyValueStore)) {
                     TransformationMessages transformationMessages = new TransformationMessages();
                     transformationMessages.setEmployee(employee);
                     keyValueList.add(new KeyValue<>(employee.getName(), transformationMessages));
@@ -39,7 +42,13 @@ public class EmployeeTransformerService implements TransformerService {
     }
 
     private boolean isValidUser(String email) {
-        return email != null && !"".equals(email);
+        return email != null && !"".equals(email.trim());
+    }
+
+    @Override
+    public boolean filterByStateStore(Employee object, KeyValueStore<String, String> keyValueStore) {
+        String storeKey = String.format("%s|%s", object.getName(), object.getAge());
+        return TRUE.equals(keyValueStore.get(storeKey));
     }
 
 }
