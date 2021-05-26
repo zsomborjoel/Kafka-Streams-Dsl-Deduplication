@@ -8,4 +8,4 @@ Kafka Streams provides so-called state stores, which can be used by stream proce
 
 State Store in the workflow
 
-![StateStore](https://github.com/zsomborjoel/Kafka-Streams-Dsl-Deduplication-Example/blob/master/kafka-streams-state-store.png)
+![StateStore](https://github.com/zsomborjoel/Kafka-Streams-Dsl-Deduplication-Example/blob/main/kafka-streams-state-store.png)
