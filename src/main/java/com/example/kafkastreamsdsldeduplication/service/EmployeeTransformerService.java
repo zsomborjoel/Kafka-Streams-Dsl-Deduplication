@@ -8,13 +8,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.state.KeyValueStore;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.kafkastreamsdsldeduplication.constants.DeduplicationConstants.TRUE;
 
-
+@Service
 public class EmployeeTransformerService implements TransformerService, DeduplicationService<Employee> {
 
     @Autowired
