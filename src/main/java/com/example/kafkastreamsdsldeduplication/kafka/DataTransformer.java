@@ -4,11 +4,14 @@ import com.example.kafkastreamsdsldeduplication.model.TransformationMessages;
 import com.example.kafkastreamsdsldeduplication.model.source.InvalidSource;
 import com.example.kafkastreamsdsldeduplication.model.source.SourceData;
 import com.example.kafkastreamsdsldeduplication.service.TransformerService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.Transformer;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.state.KeyValueStore;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -19,7 +22,10 @@ import static com.example.kafkastreamsdsldeduplication.config.StateStoreConfig.S
 
 @Component
 @Slf4j
-public class DataTransformer implements Transformer<String, SourceData, Iterable<KeyValue<String, TransformationMessages>>>  {
+public class DataTransformer implements Transformer<String, String, Iterable<KeyValue<String, TransformationMessages>>>  {
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private final TransformerService transformerService;
 
@@ -36,9 +42,12 @@ public class DataTransformer implements Transformer<String, SourceData, Iterable
         ediTransformationMessagesStateStore = cast;
     }
 
+    @SneakyThrows
     @Override
-    public Iterable<KeyValue<String, TransformationMessages>> transform(String s, SourceData sourceData) {
+    public Iterable<KeyValue<String, TransformationMessages>> transform(String s, String sourceDataJson) {
         List<KeyValue<String, TransformationMessages>> kafkaMessages = new ArrayList<>();
+
+        SourceData sourceData = objectMapper.readValue(sourceDataJson, SourceData.class);
 
         try {
             kafkaMessages = transformerService.processJson(sourceData.getSourceMetadata(), sourceData.getBody(), ediTransformationMessagesStateStore);

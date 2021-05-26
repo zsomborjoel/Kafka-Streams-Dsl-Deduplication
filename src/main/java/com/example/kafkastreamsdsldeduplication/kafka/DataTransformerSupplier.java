@@ -10,13 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DataTransformerSupplier implements TransformerSupplier<String, SourceData, Iterable<KeyValue<String, TransformationMessages>>> {
+public class DataTransformerSupplier implements TransformerSupplier<String, String, Iterable<KeyValue<String, TransformationMessages>>> {
 
     @Autowired
     private TransformerService transformerService;
 
     @Override
-    public Transformer<String, SourceData, Iterable<KeyValue<String, TransformationMessages>>> get() {
+    public Transformer<String, String, Iterable<KeyValue<String, TransformationMessages>>> get() {
         return new DataTransformer(transformerService);
     }
 

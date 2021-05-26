@@ -43,7 +43,7 @@ public class DataTransformerKafkaStream {
     private KafkaStreamConfig kafkaStreamConfig;
 
     @Autowired
-    private TransformerSupplier dataTransformerSupplier;
+    private DataTransformerSupplier dataTransformerSupplier;
 
     @Autowired
     private DataMapper dataMapper;
