@@ -1,7 +1,6 @@
 package com.example.kafkastreamsdsldeduplication.service;
 
 import com.example.kafkastreamsdsldeduplication.model.Employee;
-import com.example.kafkastreamsdsldeduplication.model.Employees;
 import com.example.kafkastreamsdsldeduplication.model.TransformationMessages;
 import com.example.kafkastreamsdsldeduplication.model.source.SourceMetadata;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -27,8 +26,8 @@ public class EmployeeTransformerService implements TransformerService, Deduplica
         List<KeyValue<String, TransformationMessages>> keyValueList = new ArrayList<>();
 
         if (sourceJson != null) {
-            Employees employees = objectMapper.readValue(sourceJson, Employees.class);
-            for (Employee employee : employees.getEmployeeList()) {
+            Employee[] employees = objectMapper.readValue(sourceJson, Employee[].class);
+            for (Employee employee : employees) {
                 if (isValidUser(employee.getEmail()) && filterByStateStore(employee, keyValueStore)) {
                     TransformationMessages transformationMessages = new TransformationMessages();
                     transformationMessages.setEmployee(employee);
